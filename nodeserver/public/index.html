@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vChat - Realtime Chat App</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="../favicon_io/site.webmanifest">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark-theme">
+    <nav>
+        <div class="logo-container">
+            <img src="https://static-00.iconduck.com/assets.00/chat-icon-2048x2048-i7er18st.png" alt="vChat Logo">
+            <span class="app-name">vChat</span>
+        </div>
+        <button id="themeToggle" class="theme-toggle">
+            <i class="fa fa-sun"></i>  <!-- FontAwesome sun icon for light theme -->
+            Switch Theme
+        </button>
+    </nav>
+
+    <!-- Modal for entering the username -->
+    <div id="usernameModal" class="modal">
+        <div class="modal-content">
+            <h2>Enter your Name</h2>
+            <input type="text" id="usernameInput" autocomplete="off" placeholder="Enter your name..." />
+            <button id="submitName">Submit</button>
+        </div>
+    </div>
+
+    <div id="welcome-container">
+        <h1 id="welcome-text"></h1>
+    </div>
+
+    <div class="container" id="message-container">
+        <!-- Messages dynamically injected here -->
+    </div>
+
+    <div id="typing-indicator" class="typing-indicator" style="display: none;">
+        User is typing...
+    </div>
+
+    <div class="actions">
+        <button id="clearChatBtn" class="btn-clear">Clear Chat</button>
+        <input type="file" id="fileInput" class="file-input" />
+    </div>
+    <!-- File Input Section -->
+    <div class="file-input-container">
+        <!-- Hidden file input -->
+        <input type="file" id="fileInput" class="file-input" onchange="handleFileSelection()" />
+        <!-- Custom Button to Trigger File Input -->
+        <label for="fileInput" class="file-input-label">Choose File</label>
+        <!-- Display the selected file name -->
+        <div id="fileName" class="file-name"></div>
+    </div>
+
+    <div class="send">
+        <form action="#" id="send-container">
+            <input type="text" name="messageInp" id="messageInp" autocomplete="off" placeholder="Type a message...">
+            <button class="btn" type="submit">Send</button>
+        </form>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/client.js"></script>
+    
+</body>
+</html>
