@@ -8,7 +8,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "https://cfd4-49-204-28-11.ngrok-free.app",
+        origin: "https://0267-49-204-27-149.ngrok-free.app",
         methods: ["GET", "POST"],
     },
 });
@@ -30,14 +30,33 @@ io.on('connection', (socket) => {
     socket.on('new-user-joined', (name) => {
         users[socket.id] = name;  // Store user's name with socket ID
         socket.broadcast.emit('user-joined', name);  // Notify other users
+        sendUserList();  // Update user list for all clients
     });
 
-    // Handle sending messages
+    // Handle public messages
     socket.on('send', (message) => {
         const userName = users[socket.id];  // Retrieve the sender's name
         if (userName) {
             socket.broadcast.emit('receive', { message, name: userName });  // Broadcast the message
         }
+    });
+
+    // Handle private messages
+    socket.on('private-message', (data) => {
+        const targetSocketId = Object.keys(users).find(
+            (id) => users[id] === data.to
+        );
+        if (targetSocketId) {
+            io.to(targetSocketId).emit('private-message', {
+                message: data.message,
+                from: users[socket.id],
+            });
+        }
+    });
+
+    socket.on('get-users', () => {
+        const userList = Object.values(users); // Get all usernames
+        socket.emit('user-list', userList); // Send the list to the requesting client
     });
 
     // Handle file sending
@@ -63,7 +82,15 @@ io.on('connection', (socket) => {
             socket.broadcast.emit('left', userName);  // Notify others the user has left
         }
         delete users[socket.id];  // Remove the user from the users object
+        sendUserList();  // Update user list for all clients
     });
+
+    // Send updated user list to all clients
+    function sendUserList() {
+        const userList = Object.values(users);
+        io.emit('user-list', userList);
+    }
+
 });
 
     server.listen(8001, () => {

@@ -36,6 +36,25 @@
         <h1 id="welcome-text"></h1>
     </div>
 
+    <!-- User List Section -->
+<!-- User List Section -->
+<div id="user-list-container">
+    <h3>Active Users</h3>
+    <ul id="user-list">
+        <!-- Sample user item -->
+        <li class="user-card">
+            <div class="avatar">
+                <img src="https://via.placeholder.com/40" alt="User 1">
+            </div>
+            <div class="user-info">
+                <span class="user-name">User 1</span>
+            </div>
+            <span class="status online"></span> <!-- Status Indicator -->
+        </li>
+        <!-- Repeat for more users -->
+    </ul>
+</div>
+
     <div class="container" id="message-container">
         <!-- Messages dynamically injected here -->
     </div>
@@ -47,7 +66,9 @@
     <div class="actions">
         <button id="clearChatBtn" class="btn-clear">Clear Chat</button>
         <input type="file" id="fileInput" class="file-input" />
+        <button id="endPrivateChatBtn">End Private Chat</button>
     </div>
+
     <!-- File Input Section -->
     <div class="file-input-container">
         <!-- Hidden file input -->
@@ -67,6 +88,5 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/client.js"></script>
-    
 </body>
 </html>

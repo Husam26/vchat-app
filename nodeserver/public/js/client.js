@@ -1,5 +1,5 @@
 // Connect to the server
-const socket = io('https://cfd4-49-204-28-11.ngrok-free.app');
+const socket = io('https://0267-49-204-27-149.ngrok-free.app');
 
 // Select DOM elements
 const form = document.getElementById('send-container');
@@ -11,10 +11,12 @@ const fileInput = document.getElementById('fileInput');  // Select file input
 const usernameModal = document.getElementById('usernameModal');
 const submitNameButton = document.getElementById('submitName');
 const usernameInput = document.getElementById('usernameInput');
+const userList = document.getElementById('user-list'); // New: User list container
 
 // Load notification sound
 const audio = new Audio('ting.mp3');
 let username = '';
+let activePrivateChat = null; // New: Track the active private cha
 
 // Function to append messages to the chat container
 var append = (message, position, timestamp = new Date()) => {
@@ -74,16 +76,22 @@ form.addEventListener('submit', (e) => {
     e.preventDefault();
     const message = messageInput.value;
     if (message.trim()) {
-        append(`You: ${message}`, 'right-message');
-        socket.emit('send', message);
+        if (activePrivateChat) {
+            append(`You (to ${activePrivateChat}): ${message}`, 'right-message');
+            socket.emit('private-message', { to: activePrivateChat, message });
+        } else {
+            append(`You: ${message}`, 'right-message');
+            socket.emit('send', message);
+        }
         messageInput.value = "";
         messageInput.blur();
     }
-});
+})
 
 // Listen for events from the server
 socket.on('user-joined', (name) => {
     append(`${name} joined the chat`, 'left-message');
+    updateUserList(); // Update the user list when a new user join
 });
 
 socket.on('receive', (data) => {
@@ -92,6 +100,68 @@ socket.on('receive', (data) => {
 
 socket.on('left', (name) => {
     append(`${name} left the chat`, 'left-message');
+    updateUserList(); // Update the user list when a user leaves
+});
+
+
+// Listen for private messages
+socket.on('private-message', (data) => {
+    append(`Private from ${data.from}: ${data.message}`, 'left-message');
+});
+
+function updateUserList() {
+    socket.emit('get-users'); // Request the list of users from the server
+}
+
+socket.on('user-list', (users) => {
+    userList.innerHTML = ''; // Clear the existing list
+    users.forEach((user) => {
+        if (user !== username) { // Exclude the current user
+            const userElement = document.createElement('li');
+            userElement.classList.add('user-card');
+            
+            // Create Avatar Section
+            const avatar = document.createElement('div');
+            avatar.classList.add('avatar');
+            const img = document.createElement('img');
+            img.src = 'https://via.placeholder.com/40';  // Placeholder avatar, change later to real avatar
+            avatar.appendChild(img);
+
+            // Create User Info Section
+            const userInfo = document.createElement('div');
+            userInfo.classList.add('user-info');
+            const userName = document.createElement('span');
+            userName.classList.add('user-name');
+            userName.innerText = user;
+            userInfo.appendChild(userName);
+
+            // Create Status Indicator
+            const status = document.createElement('span');
+            status.classList.add('status', 'online');  // Change to offline or other status dynamically
+            userElement.append(avatar, userInfo, status);
+            
+            // Event listener for private chat
+            userElement.addEventListener('click', () => {
+                activePrivateChat = user; // Set the selected user for private chat
+                alert(`Private chat started with ${user}`);
+                document.getElementById("chat-status").innerText = `Private Chat with ${user}`; // Update chat status
+            });
+
+            userList.appendChild(userElement);
+        }
+    });
+});
+
+
+const endPrivateChatBtn = document.getElementById('endPrivateChatBtn');
+
+endPrivateChatBtn.addEventListener('click', () => {
+    // Reset the active private chat
+    activePrivateChat = null;
+    alert("Private chat ended.");
+    // Optionally, clear the message container or reset UI elements
+    
+    document.getElementById("chat-status").innerText = "Public Chat";  // Optionally reset the status
 });
 
 // Show typing indicator

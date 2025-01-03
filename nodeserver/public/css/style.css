@@ -51,6 +51,7 @@ nav img {
     border-radius: 10px;
     overflow-y: auto;
     border: 1px solid #30363d;
+    min-height: 70vh; /* Increased min-height for a taller chat box */
 }
 
 .container::-webkit-scrollbar {
@@ -702,4 +703,228 @@ body.dark-theme {
     #welcome-text {
         font-size: 18px;
     }
+}
+/* Active Users Section Styling */
+#user-list-container {
+    background-color: #21262d; /* Dark background for active users list */
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    width: 50%;
+    border: 1px solid #30363d;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+    justify-content: center;
+    align-self: center;
+}
+
+/* Title of the Active Users Section */
+#user-list-container h3 {
+    font-size: 22px;
+    color: #58a6ff;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Active User List Styles */
+#user-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Individual Active User Styling */
+.user-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    color: #c9d1d9;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    background-color: #2a3038;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Hover effect for user card */
+.user-card:hover {
+    background-color: #3b3f45; /* Darker background on hover */
+    transform: scale(1.02); /* Slight zoom effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); /* Slightly bigger shadow on hover */
+}
+
+/* Avatar styling */
+.user-card .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 15px;
+}
+
+.user-card .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* User info section (name) */
+.user-card .user-info {
+    flex-grow: 1;
+}
+
+.user-card .user-name {
+    font-size: 16px;
+    font-weight: 500;
+    color: #c9d1d9;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Status Indicator */
+.status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Online and Offline status colors */
+.status.online {
+    background-color: #4CAF50; /* Green for online */
+}
+
+.status.offline {
+    background-color: #f44336; /* Red for offline */
+}
+
+/* Styling for users who are typing (italicized name) */
+.user-card.typing .user-name {
+    font-style: italic;
+    color: #58a6ff; /* Light blue for typing status */
+}
+
+/* Media Queries for Responsiveness */
+
+/* Tablet Screen (768px and below) */
+@media (max-width: 768px) {
+    #user-list-container {
+        width: 80%;  /* Increase width for better display on tablets */
+        padding: 15px;
+    }
+
+    .user-card {
+        padding: 10px 12px;
+    }
+
+    .user-card .user-name {
+        font-size: 14px;
+    }
+
+    .user-card .avatar {
+        width: 35px;
+        height: 35px;
+    }
+
+    .status {
+        width: 8px;
+        height: 8px;
+    }
+}
+
+/* Mobile Screen (480px and below) */
+@media (max-width: 480px) {
+    #user-list-container {
+        width: 90%;  /* Full width on mobile screens */
+        padding: 10px;
+    }
+
+    .user-card {
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+
+    .user-card .user-name {
+        font-size: 12px;
+    }
+
+    .user-card .avatar {
+        width: 30px;
+        height: 30px;
+    }
+
+    .status {
+        width: 7px;
+        height: 7px;
+    }
+}
+
+/* Very Small Screens (320px and below) */
+@media (max-width: 320px) {
+    #user-list-container {
+        width: 100%;  /* Take up full screen on very small devices */
+        padding: 8px;
+    }
+
+    .user-card {
+        font-size: 11px;
+        padding: 6px 8px;
+    }
+
+    .user-card .user-name {
+        font-size: 11px;
+    }
+
+    .user-card .avatar {
+        width: 28px;
+        height: 28px;
+    }
+
+    .status {
+        width: 6px;
+        height: 6px;
+    }
+}
+/* Private Chat Button Styling */
+#endPrivateChatBtn {
+    background-color: #ff5c8d; /* Soft Red/Pink for the private chat button */
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;  /* Space between icon and text */
+    margin-top: 20px;  /* Add some space from other elements */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Private Chat Button Hover Effect */
+#endPrivateChatBtn:hover {
+    background-color: #ff4d72; /* Darker shade of red/pink for hover */
+    transform: scale(1.05); /* Slight zoom effect */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Slightly bigger shadow on hover */
+}
+
+/* Private Chat Button Focus Effect */
+#endPrivateChatBtn:focus {
+    outline: none;
+    border: 2px solid #ff58a3; /* Pink border when focused */
+}
+
+/* Private Chat Button Active (when clicked) */
+#endPrivateChatBtn:active {
+    background-color: #e40055; /* Darker red when clicked */
+    transform: scale(0.98); /* Shrinks a bit when pressed */
+}
+
+/* Optional: Add an icon (like a lock) to indicate private chat */
+#endPrivateChatBtn i {
+    font-size: 18px;
 }
